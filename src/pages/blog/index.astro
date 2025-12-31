@@ -15,25 +15,31 @@ try {
 ---
 
 <BaseLayout title="Blog" description="All blog posts about software engineering, AI, and startup lessons.">
-  <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">Blog</h1>
-  <p class="mt-2 text-gray-600 dark:text-gray-400">
-    Thoughts on software engineering, AI, and building products.
-  </p>
+  <!-- Page header -->
+  <div class="pixel-border p-6 mb-8" style="background: var(--color-cream);">
+    <h1 class="font-pixel text-base" style="color: var(--color-brown-dark);">Blog</h1>
+    <p class="mt-2" style="color: var(--color-brown);">
+      Thoughts on software engineering, AI, and building products.
+    </p>
+  </div>
 
-  <div class="mt-10">
+  <!-- Posts grid -->
+  <div>
     {error ? (
-      <div class="rounded-lg border border-yellow-200 bg-yellow-50 p-6 dark:border-yellow-900 dark:bg-yellow-950">
-        <p class="text-yellow-800 dark:text-yellow-200">
-          <strong>Note:</strong> Unable to fetch posts from WordPress.
+      <div class="pixel-border p-6" style="background: var(--color-bread-light);">
+        <p class="font-pixel text-[10px]" style="color: var(--color-brown-dark);">
+          Note: Unable to fetch posts.
         </p>
-        <p class="mt-2 text-sm text-yellow-700 dark:text-yellow-300">
-          Configure <code class="rounded bg-yellow-100 px-1 dark:bg-yellow-900">WORDPRESS_API_URL</code> in your environment.
+        <p class="mt-2 text-sm" style="color: var(--color-brown);">
+          Configure <code class="pixel-tag">WORDPRESS_API_URL</code> in your environment.
         </p>
       </div>
     ) : posts.length === 0 ? (
-      <p class="text-gray-600 dark:text-gray-400">No posts yet.</p>
+      <div class="pixel-border p-6 text-center" style="background: var(--color-cream);">
+        <p class="font-pixel text-xs" style="color: var(--color-brown);">No posts yet.</p>
+      </div>
     ) : (
-      <div class="grid gap-10 sm:grid-cols-2">
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => (
           <PostCard post={post} />
         ))}

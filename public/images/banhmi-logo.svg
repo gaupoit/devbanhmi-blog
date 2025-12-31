@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" shape-rendering="crispEdges">
+  <!-- Bread top -->
+  <rect x="8" y="12" width="32" height="4" fill="#DEB887"/>
+  <rect x="6" y="16" width="36" height="4" fill="#F4DFC8"/>
+  <rect x="4" y="20" width="40" height="4" fill="#DEB887"/>
+
+  <!-- Fillings -->
+  <rect x="4" y="24" width="40" height="4" fill="#8B4513"/>
+  <rect x="8" y="24" width="8" height="4" fill="#228B22"/>
+  <rect x="20" y="24" width="8" height="4" fill="#FF6347"/>
+  <rect x="32" y="24" width="8" height="4" fill="#F0E68C"/>
+
+  <!-- Bread bottom -->
+  <rect x="4" y="28" width="40" height="4" fill="#DEB887"/>
+  <rect x="6" y="32" width="36" height="4" fill="#F4DFC8"/>
+  <rect x="8" y="36" width="32" height="4" fill="#DEB887"/>
+</svg>

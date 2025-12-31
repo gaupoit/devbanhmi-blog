@@ -3,15 +3,33 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="Page Not Found">
-  <div class="py-16 text-center">
-    <h1 class="text-6xl font-bold text-gray-300 dark:text-gray-700">404</h1>
-    <p class="mt-4 text-xl text-gray-600 dark:text-gray-400">Page not found</p>
-    <p class="mt-2 text-gray-500">The page you're looking for doesn't exist.</p>
-    <a
-      href="/"
-      class="mt-6 inline-block rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
-    >
-      Go home
-    </a>
+  <div class="max-w-xl mx-auto">
+    <div class="pixel-border p-12 text-center" style="background: var(--color-cream);">
+      <!-- Pixel 404 text -->
+      <div class="font-pixel text-4xl sm:text-6xl" style="color: var(--color-bread);">
+        404
+      </div>
+
+      <h1 class="mt-6 font-pixel text-sm" style="color: var(--color-brown-dark);">
+        Page Not Found
+      </h1>
+
+      <p class="mt-4" style="color: var(--color-brown);">
+        Oops! This page got lost in the pixels.
+      </p>
+
+      <!-- Sad banh mi illustration -->
+      <div class="mt-8 flex justify-center">
+        <img
+          src="/images/banhmi-logo.svg"
+          alt="Lost banh mi"
+          class="w-24 h-24 pixel-render opacity-50"
+        />
+      </div>
+
+      <a href="/" class="inline-block mt-8 pixel-btn px-6 py-3">
+        &lt;&lt; Go Home
+      </a>
+    </div>
   </div>
 </BaseLayout>

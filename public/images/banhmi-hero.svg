@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" shape-rendering="crispEdges">
+  <!-- Monitor -->
+  <rect x="40" y="40" width="176" height="120" fill="#5D3A1A"/>
+  <rect x="48" y="48" width="160" height="96" fill="#1a1a2e"/>
+
+  <!-- Code lines on screen -->
+  <rect x="56" y="56" width="60" height="4" fill="#87CEEB"/>
+  <rect x="56" y="64" width="80" height="4" fill="#98FB98"/>
+  <rect x="64" y="72" width="40" height="4" fill="#DEB887"/>
+  <rect x="64" y="80" width="70" height="4" fill="#FF6347"/>
+  <rect x="56" y="88" width="50" height="4" fill="#87CEEB"/>
+  <rect x="64" y="96" width="90" height="4" fill="#98FB98"/>
+  <rect x="64" y="104" width="60" height="4" fill="#DEB887"/>
+  <rect x="56" y="112" width="40" height="4" fill="#FF6347"/>
+  <rect x="56" y="120" width="80" height="4" fill="#87CEEB"/>
+  <rect x="56" y="128" width="30" height="4" fill="#98FB98"/>
+
+  <!-- Monitor stand -->
+  <rect x="112" y="160" width="32" height="8" fill="#5D3A1A"/>
+  <rect x="96" y="168" width="64" height="8" fill="#8B4513"/>
+
+  <!-- Desk surface -->
+  <rect x="16" y="176" width="224" height="16" fill="#8B4513"/>
+  <rect x="8" y="192" width="240" height="8" fill="#5D3A1A"/>
+
+  <!-- Coffee mug -->
+  <rect x="24" y="160" width="24" height="16" fill="#DEB887"/>
+  <rect x="48" y="164" width="8" height="8" fill="#DEB887"/>
+  <rect x="28" y="152" width="16" height="8" fill="#8B4513"/>
+
+  <!-- Steam from coffee -->
+  <rect x="32" y="140" width="4" height="8" fill="#E8D5C4"/>
+  <rect x="40" y="136" width="4" height="8" fill="#E8D5C4"/>
+
+  <!-- Banh mi on desk -->
+  <rect x="184" y="156" width="48" height="6" fill="#DEB887"/>
+  <rect x="182" y="162" width="52" height="6" fill="#F4DFC8"/>
+  <rect x="184" y="168" width="48" height="8" fill="#DEB887"/>
+  <rect x="188" y="162" width="12" height="6" fill="#228B22"/>
+  <rect x="204" y="162" width="12" height="6" fill="#FF6347"/>
+  <rect x="220" y="162" width="10" height="6" fill="#F0E68C"/>
+
+  <!-- Keyboard -->
+  <rect x="80" y="200" width="96" height="24" fill="#5D3A1A"/>
+  <rect x="84" y="204" width="88" height="16" fill="#E8D5C4"/>
+  <!-- Key rows -->
+  <rect x="88" y="208" width="6" height="4" fill="#DEB887"/>
+  <rect x="96" y="208" width="6" height="4" fill="#DEB887"/>
+  <rect x="104" y="208" width="6" height="4" fill="#DEB887"/>
+  <rect x="112" y="208" width="6" height="4" fill="#DEB887"/>
+  <rect x="120" y="208" width="6" height="4" fill="#DEB887"/>
+  <rect x="128" y="208" width="6" height="4" fill="#DEB887"/>
+  <rect x="136" y="208" width="6" height="4" fill="#DEB887"/>
+  <rect x="144" y="208" width="6" height="4" fill="#DEB887"/>
+  <rect x="152" y="208" width="6" height="4" fill="#DEB887"/>
+  <rect x="160" y="208" width="6" height="4" fill="#DEB887"/>
+  <rect x="92" y="214" width="72" height="4" fill="#DEB887"/>
+</svg>

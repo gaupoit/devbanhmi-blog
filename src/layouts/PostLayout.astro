@@ -14,14 +14,15 @@ const description = getExcerptText(post.excerpt.rendered);
 ---
 
 <BaseLayout title={post.title.rendered} description={description} image={featuredImage || undefined}>
-  <article class="prose prose-gray mx-auto dark:prose-invert lg:prose-lg">
-    <header class="not-prose mb-8">
+  <article class="max-w-3xl mx-auto">
+    <!-- Pixel-styled header -->
+    <header class="pixel-border p-6 sm:p-8 mb-8" style="background: var(--color-cream);">
       {categories.length > 0 && (
-        <div class="mb-4 flex gap-2">
+        <div class="mb-4 flex flex-wrap gap-2">
           {categories.map((cat) => (
             <a
               href={`/blog/category/${cat.slug}`}
-              class="text-xs font-medium uppercase tracking-wide text-blue-600 hover:text-blue-800 dark:text-blue-400"
+              class="pixel-tag hover:opacity-80"
             >
               {cat.name}
             </a>
@@ -29,50 +30,52 @@ const description = getExcerptText(post.excerpt.rendered);
         </div>
       )}
 
-      <h1 class="text-3xl font-bold tracking-tight sm:text-4xl" set:html={post.title.rendered} />
+      <h1
+        class="font-pixel text-sm sm:text-base leading-relaxed"
+        style="color: var(--color-brown-dark);"
+        set:html={post.title.rendered}
+      />
 
-      <div class="mt-4 flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+      <div class="mt-6 flex items-center gap-4 pt-4" style="border-top: 2px dashed var(--color-brown);">
         {author && (
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-3">
             {author.avatar_urls?.['48'] && (
               <img
                 src={author.avatar_urls['48']}
                 alt={author.name}
-                class="h-8 w-8 rounded-full"
+                class="h-10 w-10 pixel-border-thin"
               />
             )}
-            <span>{author.name}</span>
+            <span class="text-sm font-medium" style="color: var(--color-brown-dark);">{author.name}</span>
           </div>
         )}
-        <time datetime={post.date}>{formatDate(post.date)}</time>
+        <time class="font-pixel text-[8px]" style="color: var(--color-brown);" datetime={post.date}>
+          {formatDate(post.date)}
+        </time>
       </div>
     </header>
 
+    <!-- Featured image -->
     {featuredImage && (
-      <img
-        src={featuredImage}
-        alt={post.title.rendered}
-        class="mb-8 aspect-video w-full rounded-lg object-cover"
-      />
+      <div class="pixel-border mb-8 overflow-hidden">
+        <img
+          src={featuredImage}
+          alt={post.title.rendered}
+          class="aspect-video w-full object-cover"
+        />
+      </div>
     )}
 
-    <div set:html={post.content.rendered} />
+    <!-- Article content -->
+    <div class="pixel-border p-6 sm:p-8" style="background: var(--color-cream);">
+      <div class="prose prose-pixel max-w-none" set:html={post.content.rendered} />
+    </div>
+
+    <!-- Back link -->
+    <div class="mt-8 text-center">
+      <a href="/blog" class="pixel-btn px-5 py-3">
+        &lt;&lt; Back to Blog
+      </a>
+    </div>
   </article>
 </BaseLayout>
-
-<style is:global>
-  @reference "../styles/global.css";
-
-  /* Code block styling for WordPress content */
-  .prose pre {
-    @apply overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm;
-  }
-
-  .prose code {
-    @apply rounded bg-gray-100 px-1.5 py-0.5 text-sm dark:bg-gray-800;
-  }
-
-  .prose pre code {
-    @apply bg-transparent p-0;
-  }
-</style>

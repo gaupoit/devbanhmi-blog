@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" shape-rendering="crispEdges">
+  <!-- Mug body -->
+  <rect x="6" y="12" width="16" height="16" fill="#DEB887"/>
+  <rect x="22" y="16" width="4" height="8" fill="#DEB887"/>
+  <!-- Coffee -->
+  <rect x="8" y="14" width="12" height="8" fill="#8B4513"/>
+  <!-- Steam -->
+  <rect x="10" y="6" width="2" height="4" fill="#E8D5C4"/>
+  <rect x="14" y="4" width="2" height="4" fill="#E8D5C4"/>
+  <rect x="18" y="6" width="2" height="4" fill="#E8D5C4"/>
+</svg>

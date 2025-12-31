@@ -8,39 +8,50 @@ interface Props {
 const { post } = Astro.props;
 const featuredImage = getFeaturedImageUrl(post, 'medium_large');
 const categories = getPostCategories(post);
-const excerpt = getExcerptText(post.excerpt.rendered, 120);
+const excerpt = getExcerptText(post.excerpt.rendered, 100);
 ---
 
-<article class="group">
+<article class="group pixel-border overflow-hidden transition-transform hover:-translate-y-1" style="background: var(--color-cream);">
   <a href={`/blog/${post.slug}`} class="block">
     {featuredImage && (
-      <img
-        src={featuredImage}
-        alt={post.title.rendered}
-        class="mb-4 aspect-video w-full rounded-lg object-cover transition-opacity group-hover:opacity-90"
-        loading="lazy"
-      />
-    )}
-
-    {categories.length > 0 && (
-      <div class="mb-2 flex gap-2">
-        {categories.slice(0, 2).map((cat) => (
-          <span class="text-xs font-medium uppercase tracking-wide text-blue-600 dark:text-blue-400">
-            {cat.name}
-          </span>
-        ))}
+      <div class="relative aspect-video overflow-hidden">
+        <img
+          src={featuredImage}
+          alt={post.title.rendered}
+          class="w-full h-full object-cover transition-transform group-hover:scale-105"
+          loading="lazy"
+        />
+        <!-- Pixel scanline overlay -->
+        <div class="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(0,0,0,0.03)_2px,rgba(0,0,0,0.03)_4px)] pointer-events-none" />
       </div>
     )}
 
-    <h2
-      class="text-xl font-semibold tracking-tight group-hover:text-gray-600 dark:group-hover:text-gray-300"
-      set:html={post.title.rendered}
-    />
+    <div class="p-4">
+      {categories.length > 0 && (
+        <div class="flex gap-2 mb-3">
+          {categories.slice(0, 2).map((cat) => (
+            <span class="pixel-tag">
+              {cat.name}
+            </span>
+          ))}
+        </div>
+      )}
 
-    <p class="mt-2 text-gray-600 dark:text-gray-400">{excerpt}</p>
+      <h2
+        class="font-pixel text-xs leading-relaxed group-hover:opacity-80"
+        style="color: var(--color-brown-dark);"
+        set:html={post.title.rendered}
+      />
 
-    <time class="mt-3 block text-sm text-gray-500 dark:text-gray-500" datetime={post.date}>
-      {formatDate(post.date)}
-    </time>
+      <p class="mt-3 text-sm line-clamp-2" style="color: var(--color-brown);">
+        {excerpt}
+      </p>
+
+      <div class="mt-4 pt-3" style="border-top: 2px dashed var(--color-brown);">
+        <time class="font-pixel text-[8px]" style="color: var(--color-brown);" datetime={post.date}>
+          {formatDate(post.date)}
+        </time>
+      </div>
+    </div>
   </a>
 </article>

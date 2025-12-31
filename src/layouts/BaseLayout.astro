@@ -19,6 +19,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
 
+    <!-- Google Fonts Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
     <!-- Primary Meta Tags -->
     <title>{title} | devbanhmi</title>
     <meta name="title" content={`${title} | devbanhmi`} />
@@ -39,16 +43,46 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta property="twitter:description" content={description} />
     {image && <meta property="twitter:image" content={image} />}
   </head>
-  <body class="bg-white text-gray-900 antialiased dark:bg-gray-950 dark:text-gray-100">
-    <div class="mx-auto max-w-3xl px-4 sm:px-6">
-      <header class="flex items-center justify-between py-8">
-        <a href="/" class="text-xl font-bold tracking-tight hover:text-gray-600 dark:hover:text-gray-300">
-          devbanhmi
-        </a>
-        <nav class="flex gap-6 text-sm">
-          <a href="/" class="hover:text-gray-600 dark:hover:text-gray-300">Home</a>
-          <a href="/blog" class="hover:text-gray-600 dark:hover:text-gray-300">Blog</a>
-          <a href="/about" class="hover:text-gray-600 dark:hover:text-gray-300">About</a>
+  <body class="bg-pixel-gradient min-h-screen antialiased" style="color: var(--color-brown-dark);">
+    <div class="mx-auto max-w-4xl px-4 sm:px-6">
+      <!-- Pixel Header -->
+      <header class="py-6">
+        <div class="flex items-center justify-between">
+          <!-- Logo -->
+          <a href="/" class="flex items-center gap-3 group">
+            <img
+              src="/images/banhmi-logo.svg"
+              alt="devbanhmi mascot"
+              class="h-12 w-12 pixel-render"
+            />
+            <div>
+              <span class="font-pixel text-xs block" style="color: var(--color-brown-dark);">devbanhmi</span>
+              <span class="text-xs" style="color: var(--color-brown);">CODE. CREATE. CRUNCH.</span>
+            </div>
+          </a>
+
+          <!-- Desktop Navigation -->
+          <nav class="hidden sm:flex gap-1">
+            <a href="/" class="pixel-nav-link">Home</a>
+            <a href="/blog" class="pixel-nav-link">Blog</a>
+            <a href="/about" class="pixel-nav-link">About</a>
+          </nav>
+
+          <!-- Mobile Menu Button -->
+          <button
+            class="sm:hidden pixel-btn px-3 py-2"
+            id="mobile-menu-btn"
+            aria-label="Toggle menu"
+          >
+            Menu
+          </button>
+        </div>
+
+        <!-- Mobile Navigation (hidden by default) -->
+        <nav id="mobile-menu" class="hidden sm:hidden mt-4 flex flex-col gap-1">
+          <a href="/" class="pixel-nav-link">Home</a>
+          <a href="/blog" class="pixel-nav-link">Blog</a>
+          <a href="/about" class="pixel-nav-link">About</a>
         </nav>
       </header>
 
@@ -56,9 +90,27 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         <slot />
       </main>
 
-      <footer class="border-t border-gray-200 py-8 text-center text-sm text-gray-500 dark:border-gray-800">
-        <p>&copy; {new Date().getFullYear()} Paul. All rights reserved.</p>
+      <!-- Pixel Footer -->
+      <footer class="mt-8 mb-8">
+        <div class="pixel-border p-6 text-center" style="background: var(--color-cream);">
+          <p class="font-pixel text-xs" style="color: var(--color-brown-dark);">
+            &copy; {new Date().getFullYear()} devbanhmi
+          </p>
+          <p class="mt-2 text-sm" style="color: var(--color-brown);">
+            Made with pixels and passion
+          </p>
+        </div>
       </footer>
     </div>
+
+    <!-- Mobile Menu Script -->
+    <script>
+      const menuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+
+      menuBtn?.addEventListener('click', () => {
+        mobileMenu?.classList.toggle('hidden');
+      });
+    </script>
   </body>
 </html>

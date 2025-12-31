@@ -16,51 +16,88 @@ try {
 ---
 
 <BaseLayout title="Home">
-  <section class="mb-16">
-    <h1 class="text-4xl font-bold tracking-tight sm:text-5xl">
-      Hey, I'm Paul
-    </h1>
-    <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">
-      Co-Founder & CTO building AI Edge Devices and Computer Vision solutions.
-      I document my lessons learned in software engineering, AI, and startups here.
-    </p>
-    <div class="mt-6 flex gap-4">
-      <a
-        href="/blog"
-        class="rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
-      >
-        Read the blog
-      </a>
-      <a
-        href="/about"
-        class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-900"
-      >
-        About me
-      </a>
+  <!-- Hero Section with Floating Decorations -->
+  <section class="relative mb-12">
+    <!-- Floating pixel icons -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+      <img
+        src="/images/pixel-icons/coffee.svg"
+        alt=""
+        class="absolute top-4 left-4 w-8 h-8 pixel-render animate-float opacity-60"
+      />
+      <img
+        src="/images/pixel-icons/code.svg"
+        alt=""
+        class="absolute top-8 right-8 w-10 h-10 pixel-render animate-float-delay opacity-60"
+      />
+      <img
+        src="/images/pixel-icons/star.svg"
+        alt=""
+        class="absolute bottom-8 left-1/4 w-6 h-6 pixel-render animate-float opacity-60"
+      />
+    </div>
+
+    <!-- Main hero content -->
+    <div class="relative pixel-border p-6 sm:p-10" style="background: var(--color-cream);">
+      <div class="flex flex-col sm:flex-row items-center gap-8">
+        <!-- Hero illustration -->
+        <div class="flex-shrink-0">
+          <img
+            src="/images/banhmi-hero.svg"
+            alt="Developer desk with code, coffee and banh mi"
+            class="w-48 h-48 sm:w-56 sm:h-56 pixel-render"
+          />
+        </div>
+
+        <!-- Text content -->
+        <div class="text-center sm:text-left">
+          <h1 class="font-pixel text-sm sm:text-base leading-relaxed" style="color: var(--color-brown-dark);">
+            CODE. CREATE. CRUNCH.
+          </h1>
+          <p class="mt-4 text-base sm:text-lg max-w-md" style="color: var(--color-brown);">
+            Hey, I'm Paul! Building AI Edge Devices and documenting lessons in software engineering, AI, and startups.
+          </p>
+          <div class="mt-6 flex flex-wrap gap-4 justify-center sm:justify-start">
+            <a href="/blog" class="pixel-btn px-5 py-3">
+              Read Blog
+            </a>
+            <a href="/about" class="pixel-btn pixel-btn-secondary px-5 py-3">
+              About Me
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
+  <!-- Latest Posts Section -->
   <section>
     <div class="mb-8 flex items-center justify-between">
-      <h2 class="text-2xl font-bold tracking-tight">Latest Posts</h2>
-      <a href="/blog" class="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-        View all &rarr;
+      <h2 class="font-pixel text-xs" style="color: var(--color-brown-dark);">Latest Posts</h2>
+      <a
+        href="/blog"
+        class="font-pixel text-[8px] hover:opacity-80"
+        style="color: var(--color-brown);"
+      >
+        View All &gt;&gt;
       </a>
     </div>
 
     {error ? (
-      <div class="rounded-lg border border-yellow-200 bg-yellow-50 p-6 dark:border-yellow-900 dark:bg-yellow-950">
-        <p class="text-yellow-800 dark:text-yellow-200">
-          <strong>Note:</strong> Unable to fetch posts. Make sure your WordPress API is configured.
+      <div class="pixel-border p-6" style="background: var(--color-bread-light);">
+        <p class="font-pixel text-[10px]" style="color: var(--color-brown-dark);">
+          Note: Unable to fetch posts.
         </p>
-        <p class="mt-2 text-sm text-yellow-700 dark:text-yellow-300">
-          Set the <code class="rounded bg-yellow-100 px-1 dark:bg-yellow-900">WORDPRESS_API_URL</code> environment variable to your WordPress site URL.
+        <p class="mt-2 text-sm" style="color: var(--color-brown);">
+          Make sure your WordPress API is configured. Set the <code class="pixel-tag">WORDPRESS_API_URL</code> environment variable.
         </p>
       </div>
     ) : posts.length === 0 ? (
-      <p class="text-gray-600 dark:text-gray-400">No posts yet. Start writing!</p>
+      <div class="pixel-border p-6 text-center" style="background: var(--color-cream);">
+        <p class="font-pixel text-xs" style="color: var(--color-brown);">No posts yet. Start writing!</p>
+      </div>
     ) : (
-      <div class="grid gap-8 sm:grid-cols-2">
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => (
           <PostCard post={post} />
         ))}
