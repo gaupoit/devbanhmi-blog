@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://devbanhmi.com/sitemap-index.xml
