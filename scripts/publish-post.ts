@@ -1,8 +1,12 @@
 import { createPost, getOrCreateCategory } from "../src/lib/wordpress-publish.ts";
 
+// Category IDs:
+// 5 = Lessons Learned
+// 6 = Dev Tutorials
+// 7 = Vibe Coding
+
 async function publish() {
-  // Use Uncategorized (ID 1) for now - can change category in WP admin later
-  const categoryId = 1;
+  const categoryId = 7; // Vibe Coding
 
   const content = `<p>I've been meaning to start a blog for years. Like most developers, I kept overthinking the tech stack and never shipped anything.</p>
 
