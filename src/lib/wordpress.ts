@@ -178,41 +178,63 @@ export function formatDate(dateString: string): string {
   });
 }
 
-// Helper to strip HTML and truncate for meta description
+// Helper to strip HTML and Markdown, then truncate for meta description
 export function getExcerptText(excerpt: string, maxLength: number = 160): string {
-  const text = excerpt.replace(/<[^>]+>/g, '').trim();
+  let text = excerpt
+    .replace(/&#8211;/g, '–')          // Decode en-dash FIRST
+    .replace(/&#8212;/g, '—')          // Decode em-dash
+    .replace(/&#\d+;/g, '')            // Remove other numeric entities
+    .replace(/&amp;/g, '&')            // Decode ampersand
+    .replace(/&nbsp;/g, ' ')           // Decode non-breaking space
+    .replace(/<[^>]+>/g, '')           // Strip HTML tags
+    .replace(/^#{1,6}\s+/gm, '')       // Strip Markdown headers (## ) at line start only
+    .replace(/\*\*(.+?)\*\*/g, '$1')   // Strip bold **text**
+    .replace(/\*(.+?)\*/g, '$1')       // Strip italic *text*
+    .replace(/`([^`]+)`/g, '$1')       // Strip inline code `code`
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')  // Strip links [text](url)
+    .trim();
   if (text.length <= maxLength) return text;
   return text.substring(0, maxLength).trim() + '...';
 }
 
 // Process content - handles Markdown within WordPress content
 export function processContent(content: string): string {
-  // Check if content contains Markdown code blocks or other Markdown syntax
-  // WordPress might wrap content in <p> tags, so we need to handle that
-
-  // Pattern to detect Markdown code blocks (``` or ~~~)
-  const hasMarkdownCodeBlocks = /```[\s\S]*?```|~~~[\s\S]*?~~~/g.test(content);
-
-  // Pattern to detect Markdown headers, lists, etc.
-  const hasMarkdownSyntax = /^#{1,6}\s|^\*\s|^-\s|^\d+\.\s|^\[.+\]\(.+\)/m.test(content);
-
-  if (!hasMarkdownCodeBlocks && !hasMarkdownSyntax) {
-    return content; // Return as-is if no Markdown detected
-  }
-
-  // Extract and process Markdown content
-  // Handle content wrapped in WordPress paragraph tags
   let processed = content;
 
-  // If content has code blocks wrapped in <p> tags, unwrap them
+  // FIRST: Process inline code to protect content from emphasis processing
+  // Replace backtick code with placeholder to protect underscores
+  const codeBlocks: string[] = [];
+  processed = processed.replace(/`([^`]+)`/g, (_, code) => {
+    codeBlocks.push(code);
+    return `__CODE_BLOCK_${codeBlocks.length - 1}__`;
+  });
+
+  // Process Markdown headers inside <p> tags: <p>## Header</p> -> <h2>Header</h2>
+  processed = processed.replace(/<p>#{6}\s*(.+?)<\/p>/g, '<h6>$1</h6>');
+  processed = processed.replace(/<p>#{5}\s*(.+?)<\/p>/g, '<h5>$1</h5>');
+  processed = processed.replace(/<p>#{4}\s*(.+?)<\/p>/g, '<h4>$1</h4>');
+  processed = processed.replace(/<p>#{3}\s*(.+?)<\/p>/g, '<h3>$1</h3>');
+  processed = processed.replace(/<p>#{2}\s*(.+?)<\/p>/g, '<h2>$1</h2>');
+  processed = processed.replace(/<p>#{1}\s*(.+?)<\/p>/g, '<h1>$1</h1>');
+
+  // Process bold: **text** or __text__ -> <strong>text</strong>
+  processed = processed.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+  // Process italic: *text* -> <em>text</em>
+  // Only process asterisk-based italics (not underscores which break filenames)
+  processed = processed.replace(/(?<!\*)\*([^*]+)\*(?!\*)/g, '<em>$1</em>');
+
+  // Restore inline code blocks
+  processed = processed.replace(/__CODE_BLOCK_(\d+)__/g, (_, index) => {
+    return `<code>${codeBlocks[parseInt(index)]}</code>`;
+  });
+
+  // Process code blocks wrapped in <p> tags
   processed = processed.replace(/<p>(```[\s\S]*?```)<\/p>/g, '$1');
   processed = processed.replace(/<p>(~~~[\s\S]*?~~~)<\/p>/g, '$1');
 
-  // Convert <br> to newlines for Markdown processing
-  processed = processed.replace(/<br\s*\/?>/gi, '\n');
-
-  // Process Markdown code blocks
-  processed = processed.replace(/```(\w+)?\n([\s\S]*?)```/g, (_, lang, code) => {
+  // Process fenced code blocks: ```lang\ncode\n``` -> <pre><code>
+  processed = processed.replace(/```(\w+)?\n?([\s\S]*?)```/g, (_, lang, code) => {
     const language = lang || 'plaintext';
     const escapedCode = code.trim()
       .replace(/&/g, '&amp;')
@@ -221,8 +243,35 @@ export function processContent(content: string): string {
     return `<pre><code class="language-${language}">${escapedCode}</code></pre>`;
   });
 
-  // Process inline code
-  processed = processed.replace(/`([^`]+)`/g, '<code>$1</code>');
+  // Process blockquotes: <p>> quote</p> -> <blockquote><p>quote</p></blockquote>
+  processed = processed.replace(/<p>&gt;\s*(.+?)<\/p>/g, '<blockquote><p>$1</p></blockquote>');
+
+  // Process horizontal rules: <p>---</p> or <p>***</p> -> <hr>
+  processed = processed.replace(/<p>[-*_]{3,}<\/p>/g, '<hr>');
+
+  // Process ordered lists: <p>1. item<br>2. item</p> -> <ol><li>item</li></ol>
+  processed = processed.replace(/<p>(\d+\.\s+[\s\S]*?)<\/p>/g, (match) => {
+    const items = match
+      .replace(/<\/?p>/g, '')
+      .split(/<br\s*\/?>|\n/)
+      .map(item => item.trim())
+      .filter(item => /^\d+\.\s+/.test(item))
+      .map(item => `<li>${item.replace(/^\d+\.\s+/, '')}</li>`)
+      .join('\n');
+    return items.length > 0 ? `<ol>${items}</ol>` : match;
+  });
+
+  // Process unordered lists: <p>- item<br>- item</p> -> <ul><li>item</li></ul>
+  processed = processed.replace(/<p>([-*]\s+[\s\S]*?)<\/p>/g, (match) => {
+    const items = match
+      .replace(/<\/?p>/g, '')
+      .split(/<br\s*\/?>|\n/)
+      .map(item => item.trim())
+      .filter(item => /^[-*]\s+/.test(item))
+      .map(item => `<li>${item.replace(/^[-*]\s+/, '')}</li>`)
+      .join('\n');
+    return items.length > 0 ? `<ul>${items}</ul>` : match;
+  });
 
   return processed;
 }
