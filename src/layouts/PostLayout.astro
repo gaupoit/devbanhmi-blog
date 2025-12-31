@@ -1,6 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-import { formatDate, getFeaturedImageUrl, getAuthor, getPostCategories, getExcerptText, type WPPost } from '../lib/wordpress';
+import { formatDate, getFeaturedImageUrl, getAuthor, getPostCategories, getExcerptText, processContent, type WPPost } from '../lib/wordpress';
 
 interface Props {
   post: WPPost;
@@ -11,6 +11,7 @@ const featuredImage = getFeaturedImageUrl(post);
 const author = getAuthor(post);
 const categories = getPostCategories(post);
 const description = getExcerptText(post.excerpt.rendered);
+const content = processContent(post.content.rendered);
 ---
 
 <BaseLayout title={post.title.rendered} description={description} image={featuredImage || undefined}>
@@ -68,7 +69,7 @@ const description = getExcerptText(post.excerpt.rendered);
 
     <!-- Article content -->
     <div class="pixel-border p-6 sm:p-8" style="background: var(--color-cream);">
-      <div class="prose prose-pixel max-w-none" set:html={post.content.rendered} />
+      <div class="prose prose-pixel max-w-none" set:html={content} />
     </div>
 
     <!-- Back link -->

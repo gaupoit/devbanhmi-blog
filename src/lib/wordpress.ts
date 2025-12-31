@@ -1,6 +1,14 @@
 // WordPress REST API integration
 // Update WORDPRESS_API_URL with your WordPress site URL
 
+import { marked } from 'marked';
+
+// Configure marked for code highlighting
+marked.setOptions({
+  gfm: true,
+  breaks: true,
+});
+
 const WORDPRESS_API_URL = import.meta.env.WORDPRESS_API_URL || 'https://your-wordpress-site.com';
 
 export interface WPPost {
@@ -175,4 +183,46 @@ export function getExcerptText(excerpt: string, maxLength: number = 160): string
   const text = excerpt.replace(/<[^>]+>/g, '').trim();
   if (text.length <= maxLength) return text;
   return text.substring(0, maxLength).trim() + '...';
+}
+
+// Process content - handles Markdown within WordPress content
+export function processContent(content: string): string {
+  // Check if content contains Markdown code blocks or other Markdown syntax
+  // WordPress might wrap content in <p> tags, so we need to handle that
+
+  // Pattern to detect Markdown code blocks (``` or ~~~)
+  const hasMarkdownCodeBlocks = /```[\s\S]*?```|~~~[\s\S]*?~~~/g.test(content);
+
+  // Pattern to detect Markdown headers, lists, etc.
+  const hasMarkdownSyntax = /^#{1,6}\s|^\*\s|^-\s|^\d+\.\s|^\[.+\]\(.+\)/m.test(content);
+
+  if (!hasMarkdownCodeBlocks && !hasMarkdownSyntax) {
+    return content; // Return as-is if no Markdown detected
+  }
+
+  // Extract and process Markdown content
+  // Handle content wrapped in WordPress paragraph tags
+  let processed = content;
+
+  // If content has code blocks wrapped in <p> tags, unwrap them
+  processed = processed.replace(/<p>(```[\s\S]*?```)<\/p>/g, '$1');
+  processed = processed.replace(/<p>(~~~[\s\S]*?~~~)<\/p>/g, '$1');
+
+  // Convert <br> to newlines for Markdown processing
+  processed = processed.replace(/<br\s*\/?>/gi, '\n');
+
+  // Process Markdown code blocks
+  processed = processed.replace(/```(\w+)?\n([\s\S]*?)```/g, (_, lang, code) => {
+    const language = lang || 'plaintext';
+    const escapedCode = code.trim()
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+    return `<pre><code class="language-${language}">${escapedCode}</code></pre>`;
+  });
+
+  // Process inline code
+  processed = processed.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+  return processed;
 }
