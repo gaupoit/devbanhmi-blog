@@ -12,6 +12,9 @@ on:
   repository_dispatch:
     types: [wordpress_publish]
 
+permissions:
+  contents: write
+
 jobs:
   trigger-rebuild:
     runs-on: ubuntu-latest
