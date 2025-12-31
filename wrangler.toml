@@ -1,0 +1,8 @@
+# Cloudflare Pages configuration
+name = "devbanhmi-blog"
+compatibility_date = "2024-09-23"
+pages_build_output_dir = "dist"
+
+[vars]
+# Set your WordPress URL here or in Cloudflare dashboard
+# WORDPRESS_API_URL = "https://your-wordpress-site.com"

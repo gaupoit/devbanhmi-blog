@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import { getPosts } from '../lib/wordpress';
+
+// Fetch latest 6 posts for homepage
+let posts = [];
+let error = null;
+
+try {
+  posts = await getPosts({ perPage: 6 });
+} catch (e) {
+  error = e instanceof Error ? e.message : 'Failed to fetch posts';
+  console.error('Error fetching posts:', e);
+}
+---
+
+<BaseLayout title="Home">
+  <section class="mb-16">
+    <h1 class="text-4xl font-bold tracking-tight sm:text-5xl">
+      Hey, I'm Paul
+    </h1>
+    <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">
+      Co-Founder & CTO building AI Edge Devices and Computer Vision solutions.
+      I document my lessons learned in software engineering, AI, and startups here.
+    </p>
+    <div class="mt-6 flex gap-4">
+      <a
+        href="/blog"
+        class="rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
+      >
+        Read the blog
+      </a>
+      <a
+        href="/about"
+        class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-900"
+      >
+        About me
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <div class="mb-8 flex items-center justify-between">
+      <h2 class="text-2xl font-bold tracking-tight">Latest Posts</h2>
+      <a href="/blog" class="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+        View all &rarr;
+      </a>
+    </div>
+
+    {error ? (
+      <div class="rounded-lg border border-yellow-200 bg-yellow-50 p-6 dark:border-yellow-900 dark:bg-yellow-950">
+        <p class="text-yellow-800 dark:text-yellow-200">
+          <strong>Note:</strong> Unable to fetch posts. Make sure your WordPress API is configured.
+        </p>
+        <p class="mt-2 text-sm text-yellow-700 dark:text-yellow-300">
+          Set the <code class="rounded bg-yellow-100 px-1 dark:bg-yellow-900">WORDPRESS_API_URL</code> environment variable to your WordPress site URL.
+        </p>
+      </div>
+    ) : posts.length === 0 ? (
+      <p class="text-gray-600 dark:text-gray-400">No posts yet. Start writing!</p>
+    ) : (
+      <div class="grid gap-8 sm:grid-cols-2">
+        {posts.map((post) => (
+          <PostCard post={post} />
+        ))}
+      </div>
+    )}
+  </section>
+</BaseLayout>

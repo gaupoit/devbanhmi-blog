@@ -1,0 +1,64 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+}
+
+const { title, description = 'Personal blog by Paul - documenting lessons learned in software engineering, AI, and startups.', image } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Primary Meta Tags -->
+    <title>{title} | devbanhmi</title>
+    <meta name="title" content={`${title} | devbanhmi`} />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {image && <meta property="og:image" content={image} />}
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    {image && <meta property="twitter:image" content={image} />}
+  </head>
+  <body class="bg-white text-gray-900 antialiased dark:bg-gray-950 dark:text-gray-100">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6">
+      <header class="flex items-center justify-between py-8">
+        <a href="/" class="text-xl font-bold tracking-tight hover:text-gray-600 dark:hover:text-gray-300">
+          devbanhmi
+        </a>
+        <nav class="flex gap-6 text-sm">
+          <a href="/" class="hover:text-gray-600 dark:hover:text-gray-300">Home</a>
+          <a href="/blog" class="hover:text-gray-600 dark:hover:text-gray-300">Blog</a>
+          <a href="/about" class="hover:text-gray-600 dark:hover:text-gray-300">About</a>
+        </nav>
+      </header>
+
+      <main class="py-8">
+        <slot />
+      </main>
+
+      <footer class="border-t border-gray-200 py-8 text-center text-sm text-gray-500 dark:border-gray-800">
+        <p>&copy; {new Date().getFullYear()} Paul. All rights reserved.</p>
+      </footer>
+    </div>
+  </body>
+</html>
